@@ -30,6 +30,7 @@ object ApplicationBuild extends Build {
       libraryDependencies += "net.spy" % "spymemcached" % "2.9.0",
       libraryDependencies += "com.typesafe.play" %% "play" % play.core.PlayVersion.current % "provided",
       libraryDependencies += "com.typesafe.play" %% "play-cache" % play.core.PlayVersion.current % "provided",
+      libraryDependencies += "org.scala-lang.modules" %% "scala-pickling" % "0.10.1",
       organization := "com.github.mumoshu",
       version := appVersion,
       publishTo <<= version { v: String =>
