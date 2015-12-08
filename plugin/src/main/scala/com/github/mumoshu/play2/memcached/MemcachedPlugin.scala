@@ -1,12 +1,10 @@
 package com.github.mumoshu.play2.memcached
 
-import java.net.InetSocketAddress
 import java.util.concurrent.TimeUnit
 import net.spy.memcached.auth.{PlainCallbackHandler, AuthDescriptor}
 import net.spy.memcached.{ConnectionFactoryBuilder, AddrUtil, MemcachedClient}
 import play.api.cache.{CacheAPI, CachePlugin}
-import play.api.{Logger, Play, Application}
-import scala.util.control.Exception._
+import play.api.{Logger, Application}
 import scala.pickling.Defaults._
 import scala.pickling.binary._
 import net.spy.memcached.transcoders.{Transcoder, SerializingTranscoder}
@@ -161,9 +159,7 @@ class MemcachedPlugin(app: Application) extends CachePlugin {
    * memcachedplugin.disabled=true
    * }}}
    */
-  override lazy val enabled = {
-    !app.configuration.getString("memcachedplugin").filter(_ == "disabled").isDefined
-  }
+  override lazy val enabled = !app.configuration.getString("memcachedplugin").exists(_ == "disabled")
 
   override def onStart() {
     logger.info("Starting MemcachedPlugin.")
@@ -172,7 +168,7 @@ class MemcachedPlugin(app: Application) extends CachePlugin {
 
   override def onStop() {
     logger.info("Stopping MemcachedPlugin.")
-    client.shutdown
+    client.shutdown()
     Thread.interrupted()
   }
 }
